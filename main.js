@@ -1,8 +1,6 @@
-//Домашнее задание к лекции 1.5 «Замыкания и область видимости»
 'use strict';
 
 //task 1
-console.log('task 1');
 function tax(taxFee) {
 	var taxSum = 0;
 
@@ -20,7 +18,6 @@ calcTax(100);
 calcTax(1000);
 
 //task 2
-console.log('task 2');
 function pack() {
 	var paperArea = 30;
 	var packageArea;
@@ -53,74 +50,38 @@ calcSq(1, 1, 1);
 calcSq(10, 10, 10);
 
 //task 3
-console.log('task 3');
-var charge = [7, 2, 1, 4, 8];
-var chargeOfTeleport = [];
-var needCharge;
+const teleportsCharge = [7, 2, 1, 4, 8];
+const teleportsChargeCounters = [];
 
-function teleportCharger() {
-	function teleportCharger1(charge) {
-		return charge[0] - 1;
-	}
-
-	function teleportCharger2(charge) {
-		return charge[1] - 1;
-	}
-
-	function teleportCharger3(charge) {
-		return charge[2] - 1;
-	}
-
-	function teleportCharger4(charge) {
-		return charge[3] - 1;
-	}
-
-	function teleportCharger5(charge) {
-		return charge[4] - 1;
-	}
-
-	if (needCharge === 1) {
-		teleportCharger1();
-	} else if (needCharge === 2) {
-		teleportCharger2();
-	} else if (needCharge === 3) {
-		teleportCharger3();
-	} else if (needCharge === 4) {
-		teleportCharger4();
-	} else if (needCharge === 5) {
-		teleportCharger5();
-	} else {
-		return NaN;
-	}
-
-	chargeOfTeleport = [
-		teleportCharger1,
-		teleportCharger2,
-		teleportCharger3,
-		teleportCharger4,
-		teleportCharger5,
-	];
-
-	for (var i; i < charge.length; i++) {
-		if (charge[i] > 0) {
-			chargeOfTeleport[i]();
-			console.log(`Телепорт ${i + 1} использован, заряд — ${charge[i]} единиц`);
-		} else if (charge[i] === 1) {
-			chargeOfTeleport[i]();
+const chargeHandler = (teleportNumber) => {
+	return () => {
+		if (teleportsCharge[teleportNumber] > 1) {
+			teleportsCharge[teleportNumber] -= 1;
 			console.log(
-				`Телепорт ${i + 1} использован, заряд — ${charge[
-					i
+				`Телепорт ${teleportNumber + 1} использован, заряд — ${teleportsCharge[
+					teleportNumber
+				]} единиц`
+			);
+		} else if (teleportsCharge[teleportNumber] === 1) {
+			teleportsCharge[teleportNumber] -= 1;
+			console.log(
+				`Телепорт ${teleportNumber + 1} использован, заряд — ${teleportsCharge[
+					teleportNumber
 				]} единиц, требуется перезарядка!`
 			);
-		} else if (charge[i] === 0) {
-			console.log(`Телепорт ${i + 1} недоступен, перезаряжается`);
 		} else {
-			return NaN;
+			console.log(`Телепорт ${teleportNumber + 1} недоступен, перезаряжается`);
 		}
-		chargeOfTeleport[0]();
-		chargeOfTeleport[1]();
-		chargeOfTeleport[2]();
-		chargeOfTeleport[3]();
-		chargeOfTeleport[4]();
-	}
+	};
+};
+
+for (let i = 0; i < teleportsCharge.length; i++) {
+	teleportsChargeCounters.push(chargeHandler(i));
 }
+
+for (let i = 0; i < teleportsChargeCounters.length; i++) {
+	teleportsChargeCounters[i]();
+}
+
+teleportsChargeCounters[2]();
+
